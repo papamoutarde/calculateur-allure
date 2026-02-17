@@ -63,13 +63,13 @@ with col_vma:
 with col_dist:
     distance = st.number_input("Distance (m)", min_value=1.0, value=1000.0, step=10.0)
 
-profils = {{
+profils = {
     "Personnalisé": 100.0,
     "Endurance fondamentale (65-75%)": 70.0,
     "Allure Marathon (80-85%)": 82.0,
     "Seuil / Allure 10km (90%)": 90.0,
     "VMA courte (100-105%)": 100.0
-}}
+}
 
 choix_profil = st.selectbox("Profil d'effort :", list(profils.keys()))
 pourcentage = st.number_input("Pourcentage (%)", min_value=1.0, value=profils[choix_profil], step=1.0)
@@ -93,6 +93,7 @@ if st.button("🚀 Calculer"):
     c2.metric("Allure", f"{min_allure}:{sec_allure:02d} min/km")
 
 st.caption("ADC Loches - Précision et performance.")
+
 
 
 
