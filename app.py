@@ -21,7 +21,7 @@ def add_bg_logo(url):
     )
 
 # Remplace par l'URL de l'image de ton club
-add_bg_logo("645fdde057530_logoadcl.JPG")
+add_bg_logo("https://www.adc-loches.net/media/uploaded/sites/543/association/645fdde057530_logoadcl.JPG")
 
 st.title("🏃 Calculateur d'allure")
 st.write("Entrez vos paramètres pour calculer votre temps de passage.")
@@ -72,3 +72,4 @@ if st.button("Calculer"):
 
     except Exception as e:
         st.error("Une erreur est survenue lors du calcul. Vérifiez vos saisies.")
+
