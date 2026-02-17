@@ -17,11 +17,11 @@ with st.sidebar:
 
 # Définition des couleurs selon le mode
 if st.session_state.dark_mode:
-    bg_color = "#1E1E1E"    # Fond principal
-    sidebar_bg = "#262730"  # Fond sidebar
-    text_color = "#FFFFFF"  # Texte blanc
-    card_bg = "#2D2D2D"     # Fond des champs
-    btn_text = "#FFFFFF"    # Texte bouton
+    bg_color = "#1E1E1E"    
+    sidebar_bg = "#262730"  
+    text_color = "#FFFFFF"  
+    card_bg = "#2D2D2D"     
+    btn_text = "#FFFFFF"    
 else:
     bg_color = "#F5F5F5"
     sidebar_bg = "#FFFFFF"
@@ -57,6 +57,7 @@ st.markdown(f"""
         border: 1px solid #004a99 !important;
         width: 100%;
         font-weight: bold;
+        height: 3em;
     }}
 
     div[data-testid="stNotification"] {{
@@ -79,7 +80,7 @@ col_vma, col_dist = st.columns(2)
 with col_vma:
     vma = st.number_input("VMA (km/h)", min_value=1.0, value=15.0, step=0.5)
 with col_dist:
-    distance = st.number_input("Distance (m)", min_value=1.0, value=1000.0, step=10.0)
+    distance = st.number_input("Distance de la répétition (m)", min_value=1.0, value=1000.0, step=10.0)
 
 profils = {
     "Personnalisé": 100.0,
@@ -92,31 +93,36 @@ profils = {
 choix_profil = st.selectbox("Profil d'effort :", list(profils.keys()))
 pourcentage = st.number_input("Pourcentage (%)", min_value=1.0, value=profils[choix_profil], step=1.0)
 
-if st.button("🚀 Calculer"):
+if st.button("🚀 Calculer les temps"):
     try:
         vitesse = vma * (pourcentage / 100)
-        temps_total_secondes = (distance * 3.6) / vitesse
         
-        minutes = int((temps_total_secondes % 3600) // 60)
-        secondes = round(temps_total_secondes % 60)
+        # Calcul temps total
+        temps_total_sec = (distance * 3.6) / vitesse
+        min_total = int(temps_total_sec // 60)
+        sec_total = round(temps_total_sec % 60)
         
+        # Calcul temps au 400m (un tour de piste)
+        temps_400_sec = (400 * 3.6) / vitesse
+        min_400 = int(temps_400_sec // 60)
+        sec_400 = round(temps_400_sec % 60)
+        
+        # Allure au kilomètre
         allure_secondes = 3600 / vitesse
         min_allure = int(allure_secondes // 60)
         sec_allure = round(allure_secondes % 60)
 
         st.divider()
-        st.success(f"🎯 Temps à réaliser sur **{distance}m** : \n## **{minutes}min {secondes:02d}sec**")
+        
+        # Affichage principal : Temps sur la distance demandée
+        st.success(f"🎯 Temps pour **{distance}m** :  \n## **{min_total}min {sec_total:02d}sec**")
+        
+        # Affichage secondaire : Temps de passage au 400m
+        st.info(f"⏱️ Temps de passage au **400m** (1 tour) :  \n### **{min_400}min {sec_400:02d}sec**")
         
         c1, c2 = st.columns(2)
         c1.metric("Vitesse", f"{vitesse:.2f} km/h")
-        c2.metric("Allure", f"{min_allure}:{sec_allure:02d} min/km")
+        c2.metric("Allure au km", f"{min_allure}:{sec_allure:02d}")
+        
     except Exception:
-        st.error("Erreur de calcul. Vérifiez les valeurs saisies.")
-
-
-
-
-
-
-
-
+        st.error("Erreur de calcul. Vérifiez les valeurs.")
