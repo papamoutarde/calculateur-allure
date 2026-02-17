@@ -10,7 +10,7 @@ def add_bg_logo(url):
         .stApp {{
             background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.4)), 
                               url("{url}");
-            background-size: 100%; /* Taille du logo */
+            background-size: 75%; /* Taille du logo */
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-position: center;
@@ -72,6 +72,7 @@ if st.button("Calculer"):
 
     except Exception as e:
         st.error("Une erreur est survenue lors du calcul. Vérifiez vos saisies.")
+
 
 
 
