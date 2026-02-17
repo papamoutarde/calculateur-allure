@@ -29,6 +29,7 @@ else:
     card_bg = "#FFFFFF"
     btn_text = "#000000"
 
+# Injection du CSS pour corriger les problèmes de visibilité
 st.markdown(f"""
     <style>
     .stApp {{
@@ -82,9 +83,6 @@ with col_vma:
 with col_dist:
     distance = st.number_input("Distance totale (m)", min_value=1.0, value=1000.0, step=10.0)
 
-# Nouvelle option pour l'intervalle des temps de passage
-intervalle = st.number_input("Temps de passage tous les (m) :", min_value=10.0, value=400.0, step=50.0, help="Optionnel : réglez la distance pour chaque temps de passage (ex: 200m, 400m, 1000m)")
-
 profils = {
     "Personnalisé": 100.0,
     "Endurance fondamentale (65-75%)": 70.0,
@@ -108,20 +106,18 @@ if st.button("🚀 Calculer les temps"):
         st.divider()
         st.success(f"🎯 Temps total pour **{distance}m** :  \n## **{min_total}min {sec_total:02d}sec**")
         
-        # --- TABLEAU DES TEMPS DE PASSAGE PERSONNALISÉ ---
-        st.subheader(f"⏱️ Passages tous les {int(intervalle)}m")
+        # --- TABLEAU DES TEMPS DE PASSAGE (TOUS LES 400M) ---
+        st.subheader("⏱️ Temps de passage par tour")
         
-        # On boucle par l'intervalle choisi
-        for d_pass in range(int(intervalle), int(distance) + 1, int(intervalle)):
+        # On boucle par tranche de 400m
+        for d_pass in range(400, int(distance) + 1, 400):
             t_pass_sec = (d_pass * 3.6) / vitesse
             m_p = int(t_pass_sec // 60)
             s_p = round(t_pass_sec % 60)
-            # Calcul du numéro du passage
-            num_passage = d_pass // int(intervalle)
-            st.write(f"**Passage {num_passage}** ({d_pass}m) : `{m_p}min {s_p:02d}s`")
+            st.write(f"**Tour {d_pass//400}** ({d_pass}m) : `{m_p}min {s_p:02d}s`")
         
-        # Si la distance finale n'a pas été affichée (pas un multiple de l'intervalle)
-        if distance % intervalle != 0:
+        # Si la distance finale n'est pas un multiple de 400, on l'affiche à la fin
+        if distance % 400 != 0:
             st.write(f"**Arrivée** ({distance}m) : `{min_total}min {sec_total:02d}s`")
 
         st.divider()
@@ -137,4 +133,5 @@ if st.button("🚀 Calculer les temps"):
         
     except Exception:
         st.error("Une erreur est survenue. Vérifiez vos données de saisie.")
+
 
