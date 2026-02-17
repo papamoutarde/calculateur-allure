@@ -15,6 +15,11 @@ def add_bg_logo(url):
             background-attachment: fixed;
             background-position: center;
         }}
+
+        div[data-testid="stNotification"] {{
+            background-color: rgba(255, 255, 255, 1) !important; /* Fond blanc pur */
+            border: 2px solid #000;
+        }}
         </style>
         """,
         unsafe_allow_html=True
@@ -72,6 +77,7 @@ if st.button("Calculer"):
 
     except Exception as e:
         st.error("Une erreur est survenue lors du calcul. Vérifiez vos saisies.")
+
 
 
 
