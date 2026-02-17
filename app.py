@@ -5,48 +5,73 @@ st.set_page_config(page_title="Calculateur ADC Loches", page_icon="🏃")
 
 # --- INTERFACE ET STYLE ---
 
-# Initialisation du mode nuit dans la session
 if 'dark_mode' not in st.session_state:
     st.session_state.dark_mode = False
 
-# Sidebar pour les réglages et le logo
+# Sidebar
 with st.sidebar:
     st.image("https://www.adc-loches.net/media/uploaded/sites/543/association/645fdde057530_logoadcl.JPG", width=150)
     st.title("Options")
-    # Bouton pour basculer le mode nuit
     if st.button("🌙 Basculer Mode Nuit / Jour"):
         st.session_state.dark_mode = not st.session_state.dark_mode
 
-# Application du thème dynamique (CSS)
+# Définition des couleurs selon le mode
 if st.session_state.dark_mode:
-    bg_color = "#1E1E1E"  # Gris très foncé
-    text_color = "#FFFFFF"
-    card_bg = "#2D2D2D"
+    bg_color = "#1E1E1E"    # Fond principal
+    sidebar_bg = "#262730"  # Fond sidebar (gris sombre standard Streamlit)
+    text_color = "#FFFFFF"  # Texte blanc
+    card_bg = "#2D2D2D"     # Fond des champs de saisie
+    btn_text = "#FFFFFF"    # Texte des boutons en blanc
 else:
-    bg_color = "#F5F5F5"  # Gris très clair (reposant)
+    bg_color = "#F5F5F5"
+    sidebar_bg = "#FFFFFF"
     text_color = "#000000"
     card_bg = "#FFFFFF"
+    btn_text = "#000000"
 
 st.markdown(f"""
     <style>
+    /* Fond principal */
     .stApp {{
         background-color: {bg_color};
         color: {text_color};
     }}
+    
+    /* Barre latérale (Sidebar) */
+    [data-testid="stSidebar"] {{
+        background-color: {sidebar_bg} !important;
+    }}
+    
+    /* Forcer la couleur du texte dans la sidebar */
+    [data-testid="stSidebar"] .stMarkdown p, [data-testid="stSidebar"] h1 {{
+        color: {text_color} !important;
+    }}
+
     /* Style des cartes de saisie */
     div[data-testid="stNumberInput"], div[data-testid="stSelectbox"] {{
         background-color: {card_bg};
         padding: 10px;
         border-radius: 10px;
-        border: 1px solid #ddd;
+        border: 1px solid #444;
     }}
-    /* Bloc de résultat toujours bien visible */
+
+    /* Bouton Calculer : On force la visibilité du texte */
+    .stButton > button {{
+        color: {btn_text} !important;
+        background-color: {card_bg} !important;
+        border: 1px solid #004a99 !important;
+        width: 100%;
+    }}
+
+    /* Bloc de résultat (toujours bleu ADC Loches) */
     div[data-testid="stNotification"] {{
         background-color: #004a99 !important;
         color: white !important;
         border-radius: 15px;
     }}
-    p, h1, h3, label {{
+    
+    /* Labels et titres */
+    label, p, h1, h2, h3 {{
         color: {text_color} !important;
     }}
     </style>
@@ -93,8 +118,6 @@ if st.button("🚀 Calculer"):
     c2.metric("Allure", f"{min_allure}:{sec_allure:02d} min/km")
 
 st.caption("ADC Loches - Précision et performance.")
-
-
 
 
 
