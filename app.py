@@ -58,27 +58,27 @@ if st.button("Calculer"):
         # Affichage des résultats
         st.divider()
 
-        with st.container():
-        
+       
             # Construction du texte de temps total
-            if heures > 0:
-                temps_texte = f"{heures}h {minutes}min {secondes:02d}sec"
-            else:
-                temps_texte = f"{minutes}min {secondes:02d}sec"
+        if heures > 0:
+            temps_texte = f"{heures}h {minutes}min {secondes:02d}sec"
+        else:
+            temps_texte = f"{minutes}min {secondes:02d}sec"
 
-            st.success(f"🎯 Temps à réaliser sur **{distance}m** :  \n### **{temps_texte}**")
+        st.success(f"🎯 Temps à réaliser sur **{distance}m** :  \n### **{temps_texte}**")
         
-            # Détails techniques dans des colonnes
-            col1, col2 = st.columns(2)
+        # Détails techniques dans des colonnes
+        col1, col2 = st.columns(2)
         
-            with col1:
-                st.metric("Vitesse cible", f"{vitesse:.2f} km/h")
+        with col1:
+            st.metric("Vitesse cible", f"{vitesse:.2f} km/h")
             
-            with col2:
-                st.metric("Allure au kilo", f"{min_allure}:{sec_allure:02d} min/km")
+        with col2:
+            st.metric("Allure au kilo", f"{min_allure}:{sec_allure:02d} min/km")
 
-        except Exception as e:
-            st.error("Une erreur est survenue lors du calcul. Vérifiez vos saisies.")
+    except Exception as e:
+        st.error("Une erreur est survenue lors du calcul. Vérifiez vos saisies.")
+
 
 
 
