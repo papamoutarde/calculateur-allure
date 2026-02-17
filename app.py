@@ -1,49 +1,32 @@
-import tkinter as tk
-from tkinter import messagebox
+import streamlit as st
 
-def calculer():
+# Configuration de la page
+st.set_page_config(page_title="Calculateur allure", page_icon="🏃")
+
+st.title("🏃 Calculateur d'allure")
+st.write("Entrez vos paramètres pour calculer votre temps de passage.")
+
+# Création des champs de saisie (remplace les Entry de tkinter)
+vma = st.number_input("VMA (km/h)", min_value=1.0, value=15.0, step=0.5)
+pourcentage = st.number_input("Pourcentage (%)", min_value=1.0, max_value=200.0, value=100.0, step=1.0)
+distance = st.number_input("Distance (m)", min_value=1.0, value=1000.0, step=10.0)
+
+# Le bouton de calcul
+if st.button("Calculer"):
     try:
-        VMA = float(entry_vma.get())
-        Pourcentage = float(entry_pourcentage.get())
-        distance = float(entry_distance.get())
+        # Calculs (ton algorithme original)
+        vitesse = vma * (pourcentage / 100)
+        temps_total_secondes = (distance * 3.6) / vitesse
 
-        vitesse = VMA * (Pourcentage / 100)
-        temps = (distance * 3.6) / vitesse
+        minutes = int(temps_total_secondes // 60)
+        secondes = round(temps_total_secondes % 60)
 
-        minutes = int(temps // 60)
-        secondes = round(temps % 60)
+        # Affichage du résultat (remplace le Label/messagebox)
+        st.success(f"✅ Temps à réaliser : **{minutes} min {secondes:02d} sec**")
+        
+        # Petit bonus : la vitesse réelle en km/h
+        st.info(f"Vitesse cible : {vitesse:.2f} km/h")
 
-        resultat_label.config(
-            text=f"Temps à réaliser : {minutes} min {secondes} sec"
-        )
+    except Exception as e:
+        st.error("Une erreur est survenue lors du calcul.")
 
-    except ValueError:
-        messagebox.showerror("Erreur", "Merci d'entrer uniquement des nombres.")
-
-# Création de la fenêtre
-fenetre = tk.Tk()
-fenetre.title("Calculateur allure")
-fenetre.geometry("350x250")
-
-# Labels + champs
-tk.Label(fenetre, text="VMA (km/h)").pack()
-entry_vma = tk.Entry(fenetre)
-entry_vma.pack()
-
-tk.Label(fenetre, text="Pourcentage (%)").pack()
-entry_pourcentage = tk.Entry(fenetre)
-entry_pourcentage.pack()
-
-tk.Label(fenetre, text="Distance (m)").pack()
-entry_distance = tk.Entry(fenetre)
-entry_distance.pack()
-
-# Bouton
-tk.Button(fenetre, text="Calculer", command=calculer).pack(pady=10)
-
-# Résultat
-resultat_label = tk.Label(fenetre, text="")
-resultat_label.pack()
-
-# Lancement
-fenetre.mainloop()
